@@ -51,8 +51,5 @@ tts = TTS('vits_tts',
 tts.tts_to_file(text="Your example text", file_path="your_filename.wav")
 ```
 
-## Examples
-| Ground truth audio   | Synthesized audio (model after 44k training steps)    |
-| :---: | :---: |
-|  <audio src="audios/14482.mp3" controls preload></audio>  |   <audio src="audios/vits1.mp3" controls preload></audio>   |
-|  <audio src="audios/14266.mp3" controls preload></audio>  |   <audio src="audios/vits2.mp3" controls preload></audio>   |
+## Demo
+My trained model is published on this [HuggingFace space](https://huggingface.co/spaces/chnk58hoang/VietnameseVITS). Because of the hardware condition, my model's voice is not very natural, I will try to improve the voice quality in the future :))).
