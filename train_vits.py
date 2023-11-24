@@ -22,9 +22,7 @@ parser.add_argument('--continue_path', help="Path to a training folder to contin
 parser.add_argument('--sample_rate', type=int, default=22050)
 parser.add_argument('--meta_filename', type=str, help='name of the metadata file')
 
-
 args = parser.parse_args()
-
 
 if __name__ == '__main__':
 
