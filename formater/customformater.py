@@ -16,6 +16,7 @@ def custom_formatter(root_path, metafile, **kwargs):
 
     # Get path to the tsv metadata file
     tsv_file = os.path.join(root_path, metafile)
+
     items = []
     speaker_name = "my_speaker"
 
@@ -29,5 +30,6 @@ def custom_formatter(root_path, metafile, **kwargs):
                 text = cols[2][:-1]
                 text = text.lower()
                 clean_text = text.translate(str.maketrans('', '', string.punctuation))
+                # Get all necessary information
                 items.append({"text": clean_text, "audio_file": wav_file, "speaker_name": speaker_name, "root_path": root_path})
     return items
