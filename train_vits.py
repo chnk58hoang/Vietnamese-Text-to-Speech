@@ -14,7 +14,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--output_path', help='output path for the training process', type=str, default=None)
 parser.add_argument('--data_path', help='path to the dataset directory', type=str, default=None)
-parser.add_argument('--restore_path', help='Path to a model checkpoit. Restore the model with the given checkpoint and start a new training.', type=str, default=None)
+parser.add_argument('--restore_path', help='Path to a model checkpoint. Restore the model with the given checkpoint and start a new training.', type=str, default=None)
 parser.add_argument('--epoch', help='number of epoch', type=int, default=2000)
 parser.add_argument('--batch_size', help='batch size', type=int, default=64)
 parser.add_argument('--eval_batch_size', help='eval batch size', type=int, default=32)

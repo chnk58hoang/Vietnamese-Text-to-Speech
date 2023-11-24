@@ -3,7 +3,7 @@ from TTS.tts.utils.text.characters import BaseCharacters
 _pad = "<PAD>"
 _eos = "<EOS>"
 _bos = "<BOS>"
-_blank = "<BLNK>"  # TODO: check if we need this alongside with PAD
+_blank = "<BLNK>"
 _characters = 'abcdefghijklmnopqrstuvwxyzàáâãèéêìíòóôõùúýăđĩũơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ'
 _punctuations = "!'(),-.:;? "
 

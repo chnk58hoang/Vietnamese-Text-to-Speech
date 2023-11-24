@@ -31,5 +31,6 @@ def custom_formatter(root_path, metafile, **kwargs):
                 text = text.lower()
                 clean_text = text.translate(str.maketrans('', '', string.punctuation))
                 # Get all necessary information
-                items.append({"text": clean_text, "audio_file": wav_file, "speaker_name": speaker_name, "root_path": root_path})
+                items.append(
+                    {"text": clean_text, "audio_file": wav_file, "speaker_name": speaker_name, "root_path": root_path})
     return items
