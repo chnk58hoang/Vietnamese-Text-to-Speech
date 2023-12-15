@@ -1,1 +1,6 @@
 __pycache__
+*.onnx
+*.json
+*.pth
+*.wav
+.idea

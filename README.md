@@ -7,7 +7,7 @@ The repository contains the necessary code and resources to train VITS specifica
 ## Pre-requisites
 1. I highly recommend you to use conda virtual environment, with Python 3.11.5.
 ```bash
-conda create -n vits python=3.11.5
+conda create -n vits python=3.10
 ```
 2. In this repo, I use TTS framework version 0.17.5 for statibility.
 ```bash
@@ -41,15 +41,7 @@ python train_vits.py \
 ```
 
 ## Inference
-```python
-from TTS.api import TTS
-
-tts = TTS('vits_tts',
-          model_path='path to the .pth file ',
-          config_path='path to the config.json file')
-
-tts.tts_to_file(text="Your example text", file_path="your_filename.wav")
-```
+Please check the inference.py file
 
 ## Demo
 My trained model is published on this [HuggingFace space](https://huggingface.co/spaces/chnk58hoang/VietnameseVITS). Because of the hardware condition, my model's voice is not very natural, I will try to improve the voice quality in the future :))).
