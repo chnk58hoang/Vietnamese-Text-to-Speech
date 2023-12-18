@@ -2,35 +2,77 @@ from TTS.tts.models.vits import Vits
 from TTS.tts.configs.vits_config import VitsConfig
 from TTS.utils.audio.numpy_transforms import save_wav
 import numpy as np
+import time
+import torch
 
 
-def export_onnx(model_config_path: str, model_checkpoint_path: str, output_path: str) -> None:
-    """Convert Vits model to .onnx
+def load_model_from_config(config_path) -> (Vits, VitsConfig):
+    config = VitsConfig()
+    config.load_json(config_path)
+    vits = Vits.init_from_config(config)
+    return vits, config
+
+
+def inference_onnx(vits: Vits, config: VitsConfig, text: str, model_onnx_path: str, output_file_wav: str) -> None:
+    """
+
     Args:
-        model_config_path: path to the model config.json file
-        model_checkpoint_path: path to the model .pth file
-        output_path: path to the save .onnx file
+        vits: VITS model
+        config: Vits config
+        text: your text
+        model_onnx_path: path to the .onnx file
+        output_file_wav: path to the .wav file
 
-    Returns: None
+    Returns:
 
     """
-    model_config = VitsConfig()
-    model_config.load_json(model_config_path)
-    model = Vits.init_from_config(model_config)
-    model.load_checkpoint(config=model_config, checkpoint_path=model_checkpoint_path)
-    model.export_onnx(output_path=output_path)
-
-
-def inference(model_config_path: str, text: str, model_onnx_path: str, output_file_wav: str) -> None:
-    config = VitsConfig()
-    config.load_json(model_config_path)
-    vits = Vits.init_from_config(config)
-
+    text = text.lower()
     vits.load_onnx(model_onnx_path)
     text_inputs = np.asarray(
         vits.tokenizer.text_to_ids(text),
         dtype=np.int64,
     )[None, :]
-
-    audio = vits.inference_onnx(text_inputs)
+    start = time.perf_counter()
+    audio = vits.inference_onnx(x=text_inputs)
+    end = time.perf_counter()
+    inference_time = end - start
+    audio_length = audio.shape[1] / config.audio.sample_rate
+    print('Inference time: {}'.format(inference_time))
+    print('Audio length: {}'.format(audio_length))
+    print('Real time factor: {}'.format(inference_time / audio_length))
     save_wav(wav=audio[0], path=output_file_wav, sample_rate=config.audio.sample_rate)
+
+
+def inference(vits: Vits, config: VitsConfig, text: str, model_checkpoint_path: str, output_file_wav: str) -> None:
+    """
+
+    Args:
+        vits: the VITS model
+        config: the VITS config
+        text: your text
+        model_checkpoint_path: path to the .pth file
+        output_file_wav: path to save the output wav file
+
+    Returns: None
+
+    """
+    text = text.lower()
+    vits.load_checkpoint(config, model_checkpoint_path)
+    text_inputs = vits.tokenizer.text_to_ids(text)
+    text_inputs = torch.tensor(text_inputs).unsqueeze(0)
+    start = time.perf_counter()
+    audio = vits.inference(x=text_inputs)['model_outputs']
+    audio_length = audio.shape[-1] / config.audio.sample_rate
+    end = time.perf_counter()
+    inference_time = end - start
+    print('Inference time: {}'.format(inference_time))
+    print('Audio length: {}'.format(audio_length))
+    print('Real time factor: {}'.format(inference_time / audio_length))
+
+
+if __name__ == '__main__':
+    vits, config = load_model_from_config('config.json')
+    text = 'Bộ trưởng cho biết đã có 45 chuyến thăm của các lãnh đạo Việt Nam chủ chốt tới các nước láng giềng, các nước đối tác chiến lược.'
+    inference_onnx(vits=vits, config=config, text=text, model_onnx_path='coqui_vits.onnx', output_file_wav='out.wav')
+    # inference(vits=vits, config=config, text=text, model_checkpoint_path='checkpoint_100000.pth',
+    #           output_file_wav='out1.wav')

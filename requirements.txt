@@ -1,0 +1,4 @@
+TTS==0.17.5
+onnx
+onnxruntime
+

@@ -10,13 +10,16 @@ from vn_characters.vn_characters import VieCharacters
 from formater.customformater import custom_formatter
 import argparse
 
-
 parser = argparse.ArgumentParser()
 parser.add_argument('--output_path', help='output path for the training process', type=str, default=None)
 parser.add_argument('--data_path', help='path to the dataset directory', type=str, default=None)
-parser.add_argument('--restore_path', help='Path to a model checkpoint. Restore the model with the given checkpoint and start a new training.', type=str, default=None)
+parser.add_argument('--restore_path',
+                    help='Path to a model checkpoint. Restore the model with the given checkpoint and start a new training.',
+                    type=str,
+                    default=None)
 parser.add_argument('--epoch', help='number of epoch', type=int, default=2000)
 parser.add_argument('--batch_size', help='batch size', type=int, default=64)
+parser.add_argument('--lr', help='learning rate', type=float, default=2e-4)
 parser.add_argument('--eval_batch_size', help='eval batch size', type=int, default=32)
 parser.add_argument('--continue_path', help="Path to a training folder to continue training.", type=str, default=None)
 parser.add_argument('--sample_rate', type=int, default=22050)
@@ -25,7 +28,6 @@ parser.add_argument('--meta_filename', type=str, help='name of the metadata file
 args = parser.parse_args()
 
 if __name__ == '__main__':
-
     # Init dataset and audio config
     dataset_config = BaseDatasetConfig(meta_file_train=args.meta_filename, path=args.data_path)
     audio_config = VitsAudioConfig(
@@ -70,6 +72,8 @@ if __name__ == '__main__':
         datasets=[dataset_config],
         characters=character_config,
         cudnn_benchmark=False,
+        lr_disc=args.lr,
+        lr_gen=args.lr
     )
 
     # Init audio processor
