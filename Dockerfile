@@ -1,4 +1,4 @@
-FROM python:3.10.13
+FROM python:3.10
 WORKDIR /app
 COPY . /app
 RUN pip --default-timeout=1000 install -r requirements.txt
